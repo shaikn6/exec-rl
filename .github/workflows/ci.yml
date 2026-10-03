@@ -13,4 +13,4 @@ jobs:
           python-version: "3.12"
       - run: pip install numpy matplotlib pytest ruff torch --extra-index-url https://download.pytorch.org/whl/cpu
       - run: ruff check --select E9,F .
-      - run: pytest -q
+      - run: python -m pytest -q
