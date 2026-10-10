@@ -43,11 +43,22 @@ use an alpha signal under impact costs. They are not a claim about live-market p
 mean over 3 seeds (an earlier version reported the best seed, chosen on the evaluation paths). `study.py`
 sweeps signal strength and impact against a tuned linear signal rule; with a strong signal the simple rule beats PPO.
 
+## Optimal reference
+
+The environment is linear-quadratic, so `execrl/lq.py` computes the exact risk-neutral optimum (ignoring the
+no-buyback constraint) by a backward Riccati recursion, and `execrl/dp.py` solves the constrained problem by grid
+dynamic programming. `study_extra.py` (writes `study_extra.json`) measures every policy's gap to the constrained
+optimum and adds risk, policy-surface, signal-persistence, richer-rule, training-curve and exploration experiments.
+In this simulation a two-parameter time-varying signal rule tuned on training paths beats every PPO seed wherever
+there is a signal.
+
 ## Run
 
 ```bash
 python run.py            # trains 6 agents (~3 min on a laptop CPU), writes results.json and results.png
-python -m pytest tests   # 6 tests
+python study.py           # signal/impact sweeps and long training -> study.json
+python study_extra.py     # optimum and follow-up experiments -> study_extra.json
+python -m pytest tests     # 11 tests
 ```
 
 Requires Python 3.10+, numpy, torch, matplotlib.

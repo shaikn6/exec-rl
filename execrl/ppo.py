@@ -31,10 +31,12 @@ def act_frac(raw, obs):
     return torch.sigmoid(torch.logit(twap) + raw)
 
 
-def train(use_signal=True, iters=300, n_envs=2048, seed=0, lr=1e-3, epochs=4, clip=0.2, gae_lambda=0.95, log=None):
+def train(use_signal=True, iters=300, n_envs=2048, seed=0, lr=1e-3, epochs=4, clip=0.2, gae_lambda=0.95, log=None,
+          init_log_std=-1.0, on_iter=None):
     torch.manual_seed(seed)
     env = ExecutionEnv(n_envs, seed=seed, use_signal=use_signal)
     net = ActorCritic()
+    net.log_std.data.fill_(init_log_std)
     opt = torch.optim.Adam(net.parameters(), lr=lr)
     history = []
     for it in range(iters):
@@ -69,6 +71,8 @@ def train(use_signal=True, iters=300, n_envs=2048, seed=0, lr=1e-3, epochs=4, cl
             opt.step()
         mean_cost = -torch.stack(R).sum(0).mean().item() * REWARD_SCALE
         history.append(mean_cost)
+        if on_iter:
+            on_iter(it, net)
         if log and it % 25 == 0:
             log(f"iter {it:3d}  mean shortfall {mean_cost:7.2f} bps")
     return net, history
