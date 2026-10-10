@@ -28,9 +28,9 @@ Two engineering choices that matter:
 | TWAP | 18.8 | 83.7 |
 | Almgren-Chriss (best risk-aversion on grid) | 18.8 | 80.8 |
 | PPO, signal hidden (ablation) | 19.4 | 95.8 |
-| **PPO, with alpha signal** | **0.0** (seeds: 0.01 / 0.00 / 0.47) | 84.5 |
+| **PPO, with alpha signal** | **0.16** (mean of seeds 0.01 / 0.00 / 0.47) | 84.5 |
 
-Paired difference vs TWAP: -18.8 bps (SE 0.18). Without the signal, PPO matches TWAP and Almgren-Chriss, which
+Paired difference vs TWAP (best seed): -18.8 bps (SE 0.18); the seed mean is about -18.6. Without the signal, PPO matches TWAP and Almgren-Chriss, which
 is the correct answer when there is nothing to exploit. Best simple hand-coded signal rule reaches ~1.8 bps, so
 the learned policy also beats a hand-tuned linear rule.
 
@@ -39,8 +39,9 @@ the learned policy also beats a hand-tuned linear rule.
 ## Caveats
 
 The market is simulated and the signal is predictive by construction, so these numbers show the agent learns to
-use an alpha signal under impact costs. They are not a claim about live-market performance. The reported PPO
-row uses the best of 3 seeds on the evaluation paths; all three seed means are shown above.
+use an alpha signal under impact costs. They are not a claim about live-market performance. The PPO row is the
+mean over 3 seeds (an earlier version reported the best seed, chosen on the evaluation paths). `study.py`
+sweeps signal strength and impact against a tuned linear signal rule; with a strong signal the simple rule beats PPO.
 
 ## Run
 
