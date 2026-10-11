@@ -52,6 +52,11 @@ optimum and adds risk, policy-surface, signal-persistence, richer-rule, training
 In this simulation a two-parameter time-varying signal rule tuned on training paths beats every PPO seed wherever
 there is a signal.
 
+`study_clone.py` (writes `study_clone.json`, about 25 minutes) asks whether that gap is a limit of the network or of
+training. It fits the same network to the optimum's decisions by regression, then continues PPO from the fitted
+network. In this simulation the fitted network is within 0.01 bps of the optimum, and PPO started from it removes
+83% to 89% of the from-scratch gap but still drifts 0.3 to 3.8 bps away.
+
 ## Run
 
 ```bash

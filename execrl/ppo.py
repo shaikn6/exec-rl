@@ -32,10 +32,12 @@ def act_frac(raw, obs):
 
 
 def train(use_signal=True, iters=300, n_envs=2048, seed=0, lr=1e-3, epochs=4, clip=0.2, gae_lambda=0.95, log=None,
-          init_log_std=-1.0, on_iter=None):
+          init_log_std=-1.0, on_iter=None, init=None):
     torch.manual_seed(seed)
     env = ExecutionEnv(n_envs, seed=seed, use_signal=use_signal)
     net = ActorCritic()
+    if init is not None:  # warm start from another network's weights (study_clone.py)
+        net.load_state_dict(init)
     net.log_std.data.fill_(init_log_std)
     opt = torch.optim.Adam(net.parameters(), lr=lr)
     history = []
