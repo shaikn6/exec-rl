@@ -1,0 +1,151 @@
+{
+ "note": "Shortfall in bps of arrival notional (lower is better). dp_optimum is the grid-DP benchmark; in the square-root regime (p=0.5) it is the only optimum available. 'capture' = share of TWAP's excess-over-optimum that the policy removes. Impact matched at TWAP across exponents.",
+ "seeds": [
+  0,
+  1,
+  2,
+  3,
+  4
+ ],
+ "eval_paths_default": 20000,
+ "regimes": {
+  "p1.0_drift0.0": {
+   "impact_p": 1.0,
+   "drift": 0.0,
+   "dp_optimum": 19.257,
+   "twap": 19.253,
+   "almgren_chriss": 19.303,
+   "ac_risk_aversion": 1e-06,
+   "linear_rule": 19.253,
+   "linear_rule_k": 0.0,
+   "ppo_seed_means": [
+    19.64,
+    20.333,
+    19.603,
+    20.33,
+    19.799
+   ],
+   "ppo_mean": 19.941,
+   "ppo_gap_vs_dp": 0.684,
+   "linear_gap_vs_dp": -0.004,
+   "twap_gap_vs_dp": -0.004,
+   "ppo_capture": 180.038,
+   "linear_capture": 0.0
+  },
+  "p1.0_drift0.12": {
+   "impact_p": 1.0,
+   "drift": 0.12,
+   "dp_optimum": -3.409,
+   "twap": 18.763,
+   "almgren_chriss": 18.831,
+   "ac_risk_aversion": 1e-06,
+   "linear_rule": 3.512,
+   "linear_rule_k": 0.9,
+   "ppo_seed_means": [
+    0.012,
+    0.001,
+    0.475,
+    -0.223,
+    0.465
+   ],
+   "ppo_mean": 0.146,
+   "ppo_gap_vs_dp": 3.554,
+   "linear_gap_vs_dp": 6.92,
+   "twap_gap_vs_dp": 22.172,
+   "ppo_capture": 0.84,
+   "linear_capture": 0.688
+  },
+  "p1.0_drift0.24": {
+   "impact_p": 1.0,
+   "drift": 0.24,
+   "dp_optimum": -41.308,
+   "twap": 18.273,
+   "almgren_chriss": 18.36,
+   "ac_risk_aversion": 1e-06,
+   "linear_rule": -30.63,
+   "linear_rule_k": 2.5,
+   "ppo_seed_means": [
+    -23.893,
+    -24.911,
+    -24.43,
+    -23.537,
+    -23.535
+   ],
+   "ppo_mean": -24.061,
+   "ppo_gap_vs_dp": 17.247,
+   "linear_gap_vs_dp": 10.678,
+   "twap_gap_vs_dp": 59.581,
+   "ppo_capture": 0.711,
+   "linear_capture": 0.821
+  },
+  "p0.5_drift0.0": {
+   "impact_p": 0.5,
+   "drift": 0.0,
+   "dp_optimum": 19.254,
+   "twap": 19.253,
+   "almgren_chriss": 19.277,
+   "ac_risk_aversion": 1e-06,
+   "linear_rule": 19.253,
+   "linear_rule_k": 0.0,
+   "ppo_seed_means": [
+    19.665,
+    20.443,
+    19.954,
+    20.458,
+    19.825
+   ],
+   "ppo_mean": 20.069,
+   "ppo_gap_vs_dp": 0.815,
+   "linear_gap_vs_dp": -0.001,
+   "twap_gap_vs_dp": -0.001,
+   "ppo_capture": 662.538,
+   "linear_capture": 0.0
+  },
+  "p0.5_drift0.12": {
+   "impact_p": 0.5,
+   "drift": 0.12,
+   "dp_optimum": -18.016,
+   "twap": 18.763,
+   "almgren_chriss": 18.805,
+   "ac_risk_aversion": 1e-06,
+   "linear_rule": -13.461,
+   "linear_rule_k": 3.0,
+   "ppo_seed_means": [
+    -12.504,
+    -13.002,
+    -12.473,
+    -12.686,
+    -11.28
+   ],
+   "ppo_mean": -12.389,
+   "ppo_gap_vs_dp": 5.626,
+   "linear_gap_vs_dp": 4.555,
+   "twap_gap_vs_dp": 36.778,
+   "ppo_capture": 0.847,
+   "linear_capture": 0.876
+  },
+  "p0.5_drift0.24": {
+   "impact_p": 0.5,
+   "drift": 0.24,
+   "dp_optimum": -67.972,
+   "twap": 18.273,
+   "almgren_chriss": 18.334,
+   "ac_risk_aversion": 1e-06,
+   "linear_rule": -53.332,
+   "linear_rule_k": 3.0,
+   "ppo_seed_means": [
+    -35.392,
+    -37.517,
+    -34.27,
+    -34.53,
+    -34.393
+   ],
+   "ppo_mean": -35.22,
+   "ppo_gap_vs_dp": 32.752,
+   "linear_gap_vs_dp": 14.64,
+   "twap_gap_vs_dp": 86.245,
+   "ppo_capture": 0.62,
+   "linear_capture": 0.83
+  }
+ }
+}
