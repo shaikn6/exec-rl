@@ -27,12 +27,14 @@ Two engineering choices that matter:
 | Sell immediately | 200.0 | 0 |
 | TWAP | 18.8 | 83.7 |
 | Almgren-Chriss (best risk-aversion on grid) | 18.8 | 80.8 |
-| PPO, signal hidden (ablation) | 19.4 | 95.8 |
-| **PPO, with alpha signal** | **0.16** (mean of seeds 0.01 / 0.00 / 0.47) | 84.5 |
+| PPO, signal hidden (ablation) | 19.86 | 99.3 |
+| **PPO, with alpha signal** | **0.22** (mean of seeds 0.01 / 0.00 / 0.64; across-seed std 0.37) | 83.5 |
 
-Paired difference vs TWAP (best seed): -18.8 bps (SE 0.18); the seed mean is about -18.6. Without the signal, PPO matches TWAP and Almgren-Chriss, which
-is the correct answer when there is nothing to exploit. Best simple hand-coded signal rule reaches ~1.8 bps, so
-the learned policy also beats a hand-tuned linear rule.
+The PPO rows are the mean over the 3 seeds; Std is the per-path shortfall std averaged over seeds, and the
+across-seed std is the spread of the 3 seed means. Paired difference vs TWAP (seed-averaged cost per path): -18.5 bps (SE 0.18). Without the
+signal, PPO is no better than TWAP and Almgren-Chriss (slightly worse), which is the expected result when there is nothing to exploit. At
+this signal strength (drift 0.12), a tuned linear signal rule reaches ~3.5 bps (`study.json`), so the learned policy beats the
+linear rule, but a two-parameter time-varying rule reaches ~-1.8 bps (`study_extra.json`) and beats PPO.
 
 ![results](results.png)
 
@@ -63,10 +65,10 @@ network. In this simulation the fitted network is within 0.01 bps of the optimum
 python run.py            # trains 6 agents (~3 min on a laptop CPU), writes results.json and results.png
 python study.py           # signal/impact sweeps and long training -> study.json
 python study_extra.py     # optimum and follow-up experiments -> study_extra.json
-python -m pytest tests     # 11 tests
+python -m pytest tests     # 13 tests
 ```
 
-Requires Python 3.10+, numpy, torch, matplotlib.
+Requires Python 3.10+; `pip install -r requirements.txt` (numpy, torch, matplotlib, pytest).
 
 ## License
 
