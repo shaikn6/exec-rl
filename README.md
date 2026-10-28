@@ -68,7 +68,10 @@ python study_extra.py     # optimum and follow-up experiments -> study_extra.jso
 python -m pytest tests     # 13 tests
 ```
 
-Requires Python 3.10+; `pip install -r requirements.txt` (numpy, torch, matplotlib, pytest).
+`pip install -r requirements.txt` (Python 3.12+) installs the exact versions (numpy, torch, matplotlib, pytest and their
+dependencies) with which a fresh Python 3.12 venv on macOS arm64 reproduced `results.json` and `results.png`
+bit-for-bit; other platforms or BLAS builds may differ in the last digits. `requirements-ranges.txt` has the looser
+version ranges for other Python versions.
 
 ## License
 
