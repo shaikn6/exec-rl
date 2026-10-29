@@ -1,8 +1,15 @@
 # exec-rl
 
-Optimal trade execution with reinforcement learning: a from-scratch PPO agent (PyTorch) that liquidates a
+[![CI](https://github.com/shaikn6/exec-rl/actions/workflows/ci.yml/badge.svg)](https://github.com/shaikn6/exec-rl/actions/workflows/ci.yml)
+[![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
+[![Python 3.12+](https://img.shields.io/badge/Python-3.12%2B-3776AB?logo=python&logoColor=white)](requirements.txt)
+
+**Optimal trade execution with reinforcement learning: a from-scratch PPO agent (PyTorch) that liquidates a
 100,000-share position over 20 steps, benchmarked against TWAP and the Almgren-Chriss schedule on held-out
-simulated paths.
+simulated paths.**
+
+Simulation only: the market model and its alpha signal are synthetic, so the results show what the agent learns
+under impact costs, not live-market performance (see [Caveats](#caveats)). To reproduce, see [Quickstart](#quickstart).
 
 ## Setup
 
@@ -59,9 +66,10 @@ training. It fits the same network to the optimum's decisions by regression, the
 network. In this simulation the fitted network is within 0.01 bps of the optimum, and PPO started from it removes
 83% to 89% of the from-scratch gap but still drifts 0.3 to 3.8 bps away.
 
-## Run
+## Quickstart
 
 ```bash
+pip install -r requirements.txt   # Python 3.12+, pinned versions (see below)
 python run.py            # trains 6 agents (~3 min on a laptop CPU), writes results.json and results.png
 python study.py           # signal/impact sweeps and long training -> study.json
 python study_extra.py     # optimum and follow-up experiments -> study_extra.json
