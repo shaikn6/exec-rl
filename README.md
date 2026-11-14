@@ -1,5 +1,7 @@
 # exec-rl
 
+> **A from-scratch PPO agent that learns to beat TWAP and Almgren-Chriss at trade execution (simulation only).**
+
 [![CI](https://github.com/shaikn6/exec-rl/actions/workflows/ci.yml/badge.svg)](https://github.com/shaikn6/exec-rl/actions/workflows/ci.yml)
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 [![Python 3.12+](https://img.shields.io/badge/Python-3.12%2B-3776AB?logo=python&logoColor=white)](requirements.txt)
