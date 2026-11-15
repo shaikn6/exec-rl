@@ -1,0 +1,4 @@
+[tool.pytest.ini_options]
+# Put the repo root on sys.path so `pytest` imports the `execrl` package without an install step.
+pythonpath = ["."]
+testpaths = ["tests"]

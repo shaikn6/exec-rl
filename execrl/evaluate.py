@@ -34,3 +34,14 @@ def learned(net):
 def paired_diff(a, b):
     d = a - b
     return float(d.mean()), float(d.std() / np.sqrt(len(d)))
+
+
+if __name__ == "__main__":
+    # Fast, deterministic reproduce of the baseline rows (no training, no file writes): a few seconds on a CPU.
+    from .baselines import twap_fracs, immediate_fracs, ac_fracs
+
+    for name, fn in [("Sell immediately", immediate_fracs), ("TWAP", twap_fracs)]:
+        print(f"{name:34s} {summarize(rollout(fixed(fn)))['mean']:8.3f} bps")
+    lam, cost = min(((l, rollout(fixed(lambda t, l=l: ac_fracs(t, l)))) for l in [1e-6, 1e-5, 3e-5, 1e-4, 3e-4, 1e-3, 1e-2]),
+                    key=lambda x: x[1].mean())
+    print(f"{'Almgren-Chriss (lambda=' + format(lam, 'g') + ')':34s} {cost.mean():8.3f} bps")
