@@ -11,7 +11,7 @@
 simulated paths.**
 
 Simulation only: the market model and its alpha signal are synthetic, so the results show what the agent learns
-under impact costs, not live-market performance (see [Caveats](#caveats)). To reproduce, see [Quickstart](#quickstart).
+under impact costs, not live-market performance (see [Limitations](#limitations)). To reproduce, see [Quickstart](#quickstart).
 
 ## Setup
 
@@ -47,12 +47,18 @@ linear rule, but a two-parameter time-varying rule reaches ~-1.8 bps (`study_ext
 
 ![results](results.png)
 
-## Caveats
+## Limitations
 
-The market is simulated and the signal is predictive by construction, so these numbers show the agent learns to
-use an alpha signal under impact costs. They are not a claim about live-market performance. The PPO row is the
-mean over 3 seeds (an earlier version reported the best seed, chosen on the evaluation paths). `study.py`
-sweeps signal strength and impact against a tuned linear signal rule; with a strong signal the simple rule beats PPO.
+- **Simulation only.** The market model and its alpha signal are synthetic. The numbers show what the agent
+  learns under Almgren-Chriss impact costs with a predictive-by-construction signal; they are not a claim about
+  live-market performance (real microstructure, latency, adverse selection and transaction costs are absent).
+- **The edge is the signal, not the agent.** Without the alpha signal PPO is no better than TWAP or
+  Almgren-Chriss (the ablation row is slightly worse) -- the expected null result when there is nothing to
+  exploit.
+- **A tuned rule can beat PPO.** At a strong signal a two-parameter time-varying linear rule tuned on training
+  paths beats every PPO seed (`study_extra.json`); the learned policy is not the best achievable policy here.
+- **Seed reporting.** The PPO row is the mean over 3 seeds. An earlier version reported the best seed, which is
+  selection on the evaluation paths; `study.py` sweeps signal strength and impact against a tuned linear rule.
 
 ## Optimal reference
 
@@ -72,11 +78,17 @@ network. In this simulation the fitted network is within 0.01 bps of the optimum
 
 ```bash
 pip install -r requirements.txt   # Python 3.12+, pinned versions (see below)
-python run.py            # trains 6 agents (~3 min on a laptop CPU), writes results.json and results.png
+python -m execrl.evaluate   # fast check (~1s): reprints the baseline rows, no training, no file writes
+python run.py             # trains 6 agents (~3 min on a laptop CPU), writes results.json and results.png
 python study.py           # signal/impact sweeps and long training -> study.json
 python study_extra.py     # optimum and follow-up experiments -> study_extra.json
-python -m pytest tests     # 13 tests
+python -m pytest           # 23 tests
 ```
+
+`python -m execrl.evaluate` is the fast reproduce: it scores the three schedule baselines on the 20,000
+held-out paths and prints `TWAP 18.763`, `Almgren-Chriss 18.831` and `Sell immediately 200.000` bps, matching
+the baseline rows of `results.json` without retraining. `python run.py` reproduces the full table including the
+PPO agents.
 
 `pip install -r requirements.txt` (Python 3.12+) installs the exact versions (numpy, torch, matplotlib, pytest and their
 dependencies) with which a fresh Python 3.12 venv on macOS arm64 reproduced `results.json` and `results.png`
