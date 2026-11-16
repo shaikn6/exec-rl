@@ -25,9 +25,9 @@ Two engineering choices that matter:
 - **Policy anchored on TWAP.** The network outputs a logit offset from the TWAP slice, so an untrained policy
   equals TWAP and learning only has to find improvements.
 - **Low-variance reward.** The shortfall is rewritten by summation by parts so each step's reward carries only
-  that step's price noise. The total is identical (a unit test checks it against the closed form), but
-  a naive reward that carries the accumulated price history did not learn: PPO finished at 30-38 bps, *worse*
-  than TWAP.
+  that step's price noise. The total is identical (a unit test checks it against the closed form). In an
+  earlier experiment whose code and results are not kept in this repository, a naive reward that carries the
+  accumulated price history did not learn: PPO finished at 30-38 bps, *worse* than TWAP.
 
 ## Results (20,000 held-out paths, 3 training seeds)
 
@@ -74,6 +74,12 @@ training. It fits the same network to the optimum's decisions by regression, the
 network. In this simulation the fitted network is within 0.01 bps of the optimum, and PPO started from it removes
 83% to 89% of the from-scratch gap but still drifts 0.3 to 3.8 bps away.
 
+`study_nonlinear.py` (writes `study_nonlinear.json`, 5 seeds) asks whether RL helps once impact is non-linear, so no
+closed-form optimum exists. It switches to square-root impact (per-step cost proportional to shares sold to the power
+1.5) and uses the grid dynamic-programming optimum as the benchmark. PPO still trails the tuned linear rule: at drift
+0.12 its mean is 5.6 bps above the optimum against 4.6 for the linear rule, and at drift 0.24 it is 32.8 against 14.6.
+The quadratic-impact control reproduces the main study's TWAP, linear-rule and optimum values.
+
 ## Quickstart
 
 ```bash
@@ -82,6 +88,8 @@ python -m execrl.evaluate   # fast check (~1s): reprints the baseline rows, no t
 python run.py             # trains 6 agents (~3 min on a laptop CPU), writes results.json and results.png
 python study.py           # signal/impact sweeps and long training -> study.json
 python study_extra.py     # optimum and follow-up experiments -> study_extra.json
+python study_clone.py     # network-capacity vs training check (~25 min) -> study_clone.json
+python study_nonlinear.py # square-root impact against the grid optimum -> study_nonlinear.json
 python -m pytest           # 23 tests
 ```
 
